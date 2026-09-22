@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using techPhoneApplication.Data;
 using techPhoneApplication.Models;
+using techPhoneApplication.Services;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace techPhoneApplication.Controllers
@@ -14,10 +15,13 @@ namespace techPhoneApplication.Controllers
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly CurrencyService _currencyService;
 
-        public ProductsController(ApplicationDbContext context)
+
+        public ProductsController(ApplicationDbContext context, CurrencyService currencyService)
         {
             _context = context;
+            _currencyService = currencyService;
         }
 
         // GET: Products
@@ -61,10 +65,12 @@ namespace techPhoneApplication.Controllers
         // POST: Products/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,Currency,Description,ManufactureDate")] Product product)
+        public async Task<IActionResult> Create([Bind("Id,Name,Price,ConvertedPrice,Currency,Description,ManufactureDate")] Product product)
         {
             if (ModelState.IsValid)
             {
+                product.ConvertedPrice = await _currencyService.ConvertToPHP(
+                    product.Price, product.Currency, DateTime.Now);
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -91,7 +97,7 @@ namespace techPhoneApplication.Controllers
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Currency,Description,ManufactureDate")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,ConvertedPrice,Currency,Description,ManufactureDate")] Product product)
         {
             if (id != product.Id)
             {
@@ -102,6 +108,8 @@ namespace techPhoneApplication.Controllers
             {
                 try
                 {
+                    product.ConvertedPrice = await _currencyService.ConvertToPHP(
+                    product.Price, product.Currency, DateTime.Now);
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }

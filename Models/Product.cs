@@ -12,6 +12,8 @@ namespace techPhoneApplication.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
         public string Currency { get; set; } = "PHP";
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal ConvertedPrice { get; set; }
         public string Description { get; set; }
         public DateTime ManufactureDate { get; set; }
 

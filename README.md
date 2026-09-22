@@ -24,5 +24,22 @@
 - This automatically created the table or changes in the database, using entity framework and using the model
 - I had an update that added a column that also updates the database using entity framework
 
+# API Integration
+- I added a ConvertedPrice in the Product model to cater the final price
+- I integrate https://api.frankfurter.dev/ so I can convert the price to PHP
+whenever it added a different currency in real time
+- I created a service for the currency conversion integration
+- I deserialized frankfurter to get the response from it
+- I store both the original price and convertedprice value in the database
 
+
+# Assumptions
+- Frankfurter doesnt need an authentication
+- Supported currencies are available
+- Can still use both original and converted values
+
+# Tradeoffs
+- In saving both values, it uses more space but in auditing or investigating the data will be easier.
+- In API integration, it makes easier to use or convert the currency base on the real time rates
+and it makes the code clean
 
