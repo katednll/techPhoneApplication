@@ -44,8 +44,8 @@ whenever it added a different currency in real time
 and it makes the code clean
 
 # How to run
--git clone https://github.com/katednll/techPhoneApplication.git
--cd techPhoneApplication
--update connection string in appsettings.json to point to DB that you’re using
--dotnet ef database update
--dotnet run
+- git clone https://github.com/katednll/techPhoneApplication.git
+- cd techPhoneApplication
+- update connection string in appsettings.json to point to DB that you’re using
+- dotnet ef database update
+- dotnet run
